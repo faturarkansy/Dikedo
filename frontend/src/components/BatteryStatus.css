@@ -1,0 +1,64 @@
+.battery-container p {
+    text-align: center;
+}
+
+.battery {
+    width: 100px;
+    height: 50px;
+    border: 2px solid #000;
+    position: relative;
+    border-radius: 8px;
+    margin: 20px;
+}
+
+.battery:before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    right: -10px;
+    width: 10px;
+    height: 20px;
+    background: #000;
+}
+
+.battery-level {
+    height: 100%;
+    transition: width 0.5s;
+    position: relative;
+    border-radius: 6px;
+}
+
+.blue {
+    background: blue;
+}
+
+.red {
+    background: red;
+}
+
+.charging {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% {
+        box-shadow: 0 0 10px green;
+    }
+
+    50% {
+        box-shadow: 0 0 20px green;
+    }
+
+    100% {
+        box-shadow: 0 0 10px green;
+    }
+}
+
+.charging-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: yellow;
+    font-size: 20px;
+}

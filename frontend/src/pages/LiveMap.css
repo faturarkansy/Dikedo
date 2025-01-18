@@ -1,0 +1,36 @@
+/* CSS ini dapat ditambahkan ke file CSS Anda atau di dalam <style> di React component */
+
+.leaflet-control-zoom {
+    display: none;
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    /* Set the scrollbar width */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Optional: scrollbar track color */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #888;
+    /* Color of the scrollbar handle */
+    border-radius: 10px;
+    /* Rounded corners */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* Darker handle on hover */
+}
+
+/* For Firefox */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    /* Narrow scrollbar */
+    scrollbar-color: #888 #f1f1f1;
+    /* Handle color and track color */
+}
