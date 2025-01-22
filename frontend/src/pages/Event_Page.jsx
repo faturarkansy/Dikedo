@@ -93,7 +93,15 @@ const Event = () => {
 
     return (
         <>
-            <div className="py-5 px-4 w-auto bg-white flex items-center justify-between cursor-pointer mt-5 border-y-2 border-gray-200">
+            <div
+                className="py-5 px-4 w-auto bg-white flex items-center justify-between cursor-pointer mt-5 border-y-2 border-gray-200 relative"
+                style={{
+                    backgroundImage: "url('images/ornament header.svg')",
+                    backgroundPosition: "right 5px",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "175px",
+                }}
+            >
                 <div className="flex items-center gap-3">
                     <img
                         src="images/trip_active.svg"
@@ -104,7 +112,9 @@ const Event = () => {
                         Event
                     </h5>
                 </div>
-                <Search />
+                <div className="font-medium">
+                    <Search />
+                </div>
             </div>
             {/* Kontainer Kendaraan */}
             <div className="flex items-center mt-4 px-4  relative">
@@ -138,8 +148,8 @@ const Event = () => {
                     <table className="min-w-full table-auto text-sm text-gray-700">
                         <thead className="bg-white border-b-4 border-gray-200">
                             <tr>
-                                <th className="text-left px-6 py-3 font-medium">Berangkat</th>
-                                <th className="text-left px-6 py-3 font-medium">Sampai</th>
+                                <th className="text-left px-6 py-3 font-medium">Start</th>
+                                <th className="text-left px-6 py-3 font-medium">Arrive</th>
                                 <th className="text-left px-6 py-3 font-medium">Status</th>
                             </tr>
                         </thead>

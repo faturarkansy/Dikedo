@@ -95,11 +95,11 @@ export default class AddVehicle extends Component {
             <>
                 <div onClick={() => this.setOpenModal(true)} className="bg-cyan-600 shadow-md rounded-lg py-2 px-4 md:px-6 w-fit border border-gray-200 flex items-center justify-center cursor-pointer">
                     <p className="font-bold text-xs md:text-sm text-white">
-                        Tambah <FontAwesomeIcon icon={faPlus} className="fa-solid" />
+                        Add New <FontAwesomeIcon icon={faPlus} className="fa-solid" />
                     </p>
                 </div>
                 <Modal show={openModal} size="md" onClose={this.onCloseModal} popup>
-                    <Modal.Header />
+                    <Modal.Header><div className="p-4">Tambah Kendaraan</div></Modal.Header>
                     <Modal.Body>
                         <div className="space-y-6">
                             <div>

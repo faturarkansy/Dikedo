@@ -53,7 +53,7 @@ export default function KendaraanEdit() {
     };
 
     const handleBack = () => {
-        navigate('/KendaraanDetail');
+        navigate('/kendaraan/${vehicle.id}');
     };
 
     return (

@@ -7,8 +7,8 @@ const SideBar = () => {
 
     const menuItems = [
         { name: 'Live Map', route: '/Live-map', icon: '/images/livemap_active.svg', inactiveIcon: '/images/livemap_unactive.svg' },
-        { name: 'Kendaraan', route: '/Kendaraan', icon: '/images/kendaraan_active.svg', inactiveIcon: '/images/kendaraan_unactive.svg' },
-        { name: 'Histori Tagihan', route: '/HistoriTagihan', icon: '/images/tagihan_active.svg', inactiveIcon: '/images/tagihan_unactive.svg' },
+        { name: 'Vehicles', route: '/Kendaraan', icon: '/images/kendaraan_active.svg', inactiveIcon: '/images/kendaraan_unactive.svg' },
+        { name: 'Bill History', route: '/HistoriTagihan', icon: '/images/tagihan_active.svg', inactiveIcon: '/images/tagihan_unactive.svg' },
         { name: 'Katalog', route: '/Katalog', icon: '/images/katalog_active.svg', inactiveIcon: '/images/katalog_unactive.svg' },
         { name: 'Event', route: '/Event', icon: '/images/event_active.svg', inactiveIcon: '/images/event_unactive.svg' },
         { name: 'Trip', route: '/Trip', icon: '/images/trip_active.svg', inactiveIcon: '/images/trip_unactive.svg' },

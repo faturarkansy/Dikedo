@@ -52,7 +52,15 @@ const HistoriTagihan = () => {
 
     return (
         <>
-            <div className="py-5 px-4 w-auto bg-white flex items-center justify-between cursor-pointer mt-5 border-y-2 border-gray-200">
+            <div
+                className="py-5 px-4 w-auto bg-white flex items-center justify-between cursor-pointer mt-5 border-y-2 border-gray-200 relative"
+                style={{
+                    backgroundImage: "url('images/ornament header.svg')",
+                    backgroundPosition: "right 5px",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "175px",
+                }}
+            >
                 <div className="flex items-center gap-3">
                     <img
                         src="images/tagihan_active.svg"
@@ -60,20 +68,22 @@ const HistoriTagihan = () => {
                         className="w-7 h-7 lg:w-10 lg:h-10"
                     />
                     <h5 className="text-lg lg:text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-300 text-transparent bg-clip-text">
-                        Histori Tagihan
+                        Bill History
                     </h5>
                 </div>
-                <Search />
+                <div className="font-medium">
+                    <Search />
+                </div>
             </div>
             <div className="hidden md:block overflow-x-auto m-4 rounded-lg shadow-lg ">
                 <table className="min-w-full table-auto text-sm text-gray-700">
                     <thead className="bg-white border-b-4 border-gray-200">
                         <tr>
-                            <th className="text-left px-6 py-3 font-medium">Tagihan</th>
-                            <th className="text-left px-6 py-3 font-medium">Layanan</th>
-                            <th className="text-left px-6 py-3 font-medium">Jumlah</th>
+                            <th className="text-left px-6 py-3 font-medium">Bill</th>
+                            <th className="text-left px-6 py-3 font-medium">Service</th>
+                            <th className="text-left px-6 py-3 font-medium">Price</th>
                             <th className="text-left px-6 py-3 font-medium">Status</th>
-                            <th className="text-left px-6 py-3 font-medium">Pembayaran</th>
+                            <th className="text-left px-6 py-3 font-medium">Payment</th>
                             <th className="text-center px-6 py-3 font-medium">Action</th>
                         </tr>
                     </thead>
@@ -100,8 +110,8 @@ const HistoriTagihan = () => {
                                 </td>
                                 <td className="px-6 py-4">{row.pembayaran}</td>
                                 <td className="px-6 py-4 text-center">
-                                    <button className="bg-cyan-600 text-white px-3 py-1 rounded">
-                                        BAYAR
+                                    <button className="bg-cyan-600 text-white font-medium px-3 py-1 shadow-md border border-gray-500 rounded">
+                                        Pay Now
                                     </button>
                                 </td>
                             </tr>
@@ -179,13 +189,13 @@ const HistoriTagihan = () => {
                                 </span>
                             </p>
                             <p className="text-sm mt-1">
-                                <span className="font-medium">PEMBAYARAN:</span>{" "}
+                                <span className="font-medium">PAYMENT:</span>{" "}
                                 {row.pembayaran}
                             </p>
                         </div>
                         <div className="mt-4 flex justify-end space-x-2">
-                            <button className="bg-cyan-500 text-white px-3 py-1 rounded">
-                                BAYAR
+                            <button className="bg-cyan-600 text-white font-medium px-3 py-1 shadow-md border border-gray-500 rounded">
+                                Pay Now
                             </button>
                         </div>
                     </div>

@@ -25,7 +25,15 @@ export default function Kendaraan() {
     return (
         <div className="w-[85vw] lg:w-full min-h-full">
             {/* Header */}
-            <div className="py-5 px-4 w-auto bg-white flex items-center justify-between cursor-pointer mt-5 border-y-2 border-gray-200">
+            <div
+                className="py-5 px-4 w-auto bg-white flex items-center justify-between cursor-pointer mt-5 border-y-2 border-gray-200 relative"
+                style={{
+                    backgroundImage: "url('images/ornament header.svg')",
+                    backgroundPosition: "right 5px",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "175px",
+                }}
+            >
                 <div className="flex items-center gap-2 lg:gap-3">
                     <img
                         src="images/kendaraan_active.svg"
@@ -33,10 +41,13 @@ export default function Kendaraan() {
                         className="w-7 h-7 lg:w-10 lg:h-10"
                     />
                     <h5 className="text-lg lg:text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-300 text-transparent bg-clip-text">
-                        Kendaraan
+                        Vehicles
                     </h5>
                 </div>
-                <Search />
+                <div className="font-medium">
+                    <Search />
+                </div>
+
             </div>
 
             {/* Add Vehicle Button */}

@@ -4,7 +4,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -25,6 +25,7 @@ export default function KendaraanDetail() {
     const [vehicle, setVehicle] = useState({});
     const [modal, setModal] = useState(false);
     const [coordinates, setCoordinates] = useState({ lat: -6.200000, lng: 106.816666 });
+    const [intervalId, setIntervalId] = useState(null);
 
     useEffect(() => {
         axios
@@ -70,6 +71,39 @@ export default function KendaraanDetail() {
             timer: 1500,
         });
     };
+
+    const [trackingData, setTrackingData] = useState([]);
+    const [isTracking, setIsTracking] = useState(false);
+    const [progress, setProgress] = useState(0);
+
+    const handleStartTracking = () => {
+        setIsTracking(true);
+        // Simulasi data tracking
+        const newIntervalId = setInterval(() => {
+            setTrackingData((prevData) => [
+                ...prevData,
+                {
+                    lat: coordinates.lat + Math.random() * 0.01,
+                    lng: coordinates.lng + Math.random() * 0.01,
+                },
+            ]);
+            setProgress((prevProgress) => (prevProgress < 100 ? prevProgress + 5 : 100));
+        }, 1000);
+
+        // Simpan interval untuk penghentian nanti
+        setIntervalId(newIntervalId);
+    };
+
+
+    const handlePauseTracking = () => {
+        setIsTracking(false);
+        if (intervalId) {
+            clearInterval(intervalId);
+            setIntervalId(null); // Reset intervalId setelah menghentikan interval
+        }
+    };
+
+
 
     return (
         <div className="w-[85vw] lg:w-full min-h-full ">
@@ -187,14 +221,53 @@ export default function KendaraanDetail() {
                     </div>
 
                     {/* Kontainer Tracking Jalan */}
-                    <div className="grid grid-rows-4 lg:grid-cols-3 lg:grid-rows-1 bg-white p-4 rounded-lg shadow-md h-[300px] gap-4">
+                    <div className="grid grid-rows-3 lg:grid-cols-3 lg:grid-rows-1 bg-white p-4 rounded-lg shadow-md min-h-[300px] gap-4">
                         {/* Kontainer Judul */}
-                        <div className="row-span-1 lg:col-span-1 text-lg font-bold text-cyan-600 flex lg:items-center justify-center rounded-md">
-                            Tracking Jalan
-                        </div>
+                        <div className="row-span-1 lg:col-span-1 flex flex-col items-center justify-center text-lg font-bold text-cyan-600 bg-white rounded-lg shadow-md p-6 space-y-4">
+                            {/* Judul */}
+                            <h2 className="text-xl text-cyan-600">Tracking Jalan</h2>
 
+                            {/* Button Group */}
+                            <div className="flex space-x-4">
+                                <button
+                                    onClick={handleStartTracking}
+                                    className="p-2 bg-cyan-600 text-white text-sm rounded-lg shadow hover:bg-white hover:text-cyan-600 hover:border-2 hover:border-cyan-600"
+                                >
+                                    Start
+                                </button>
+                                <button
+                                    onClick={handlePauseTracking}
+                                    className="p-2 bg-cyan-600 text-white text-sm rounded-lg shadow hover:bg-white hover:text-cyan-600 hover:border-2 hover:border-cyan-600"
+                                >
+                                    Pause
+                                </button>
+                            </div>
+
+                            {/* Progress Bar */}
+                            <div className="w-full">
+                                <p className="font-semibold text-center text-gray-700 text-xs mb-2">Progress Bar</p>
+                                <div className="relative w-full h-4 bg-gray-300 rounded-full">
+                                    <div
+                                        className="absolute top-0 left-0 h-4 bg-cyan-500 rounded-full"
+                                        style={{ width: `${progress}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+
+                            {/* Longitude & Latitude */}
+                            <div className="w-full bg-gray-200 text-center text-gray-700 text-xs font-mono rounded-md p-2">
+                                {trackingData.length > 0 ? (
+                                    <>
+                                        {trackingData[trackingData.length - 1].lat}, {trackingData[trackingData.length - 1].lng}
+                                    </>
+                                ) : (
+                                    "No Data"
+                                )}
+                            </div>
+                        </div>
                         {/* Kontainer Map */}
-                        <div className="row-span-3 lg:col-span-2 rounded-md overflow-hidden">
+                        <div className="row-span-2 lg:col-span-2 rounded-md overflow-hidden ">
+                            {/* Map Section */}
                             <MapContainer
                                 center={[coordinates.lat, coordinates.lng]}
                                 zoom={13}
@@ -202,18 +275,29 @@ export default function KendaraanDetail() {
                                 className="w-full h-full"
                             >
                                 <TileLayer
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    url='https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&key=AIzaSyCxPsqzrnGiVjmKIBwCDdzAUIBVbBM2Ums'
+                                    attribution=''
                                 />
-                                <Marker position={[coordinates.lat, coordinates.lng]}>
-                                    <Popup>
-                                        Lokasi Kendaraan: <br />
-                                        Latitude: {coordinates.lat}, <br />
-                                        Longitude: {coordinates.lng}
-                                    </Popup>
-                                </Marker>
+                                {trackingData.map((coord, index) => (
+                                    <Marker
+                                        key={index}
+                                        position={[coord.lat, coord.lng]}
+                                    >
+                                        <Popup>
+                                            Latitude: {coord.lat.toFixed(5)} <br />
+                                            Longitude: {coord.lng.toFixed(5)}
+                                        </Popup>
+                                    </Marker>
+                                ))}
+                                {trackingData.length > 1 && (
+                                    <Polyline
+                                        positions={trackingData.map((coord) => [coord.lat, coord.lng])}
+                                        color="blue"
+                                    />
+                                )}
                             </MapContainer>
                         </div>
+
                     </div>
                 </div>
                 {/* Modal */}

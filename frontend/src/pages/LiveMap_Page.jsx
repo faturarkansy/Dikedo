@@ -200,7 +200,9 @@ const LiveMap = () => {
                     placeholder="Search to find"
                     className="block pt-2 ps-10 text-xs lg:text-sm text-gray-900 border border-gray-300 rounded-lg w-56 lg:w-80 bg-white focus:ring-cyan-400 focus:border-cyan-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-cyan-400 dark:focus:border-cyan-400"
                 /> */}
-                <Search />
+                <div className="font-medium">
+                    <Search />
+                </div>
                 <div className="flex justify-between mb-4 mt-4 bg-white border border-gray-300 p-2 px-3 rounded-lg">
                     <div className="flex items-center mr-2">
                         <input

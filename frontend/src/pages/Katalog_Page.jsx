@@ -29,13 +29,13 @@ const ServiceCard = ({ name, price, features, service, dispatch }) => {
                         <FeatureItem key={index} feature={feature} />
                     ))}
                 </ul>
-                <button
+                {/* <button
                     type="button"
                     onClick={() => dispatch({ type: "Add", product: service })}
                     className="inline-flex w-full justify-center rounded-lg bg-cyan-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-cyan-200 dark:focus:ring-cyan-900"
                 >
                     Subscribe
-                </button>
+                </button> */}
             </Card>
         </div>
     );
@@ -88,7 +88,7 @@ const Services = () => {
     return (
         <div className="relative">
             {/* Cart Button */}
-            <div className="fixed bg-white top-[115px] md:top-[118px] right-3 md:right-4 z-50 rounded-full p-0.5">
+            {/* <div className="fixed bg-white top-[115px] md:top-[118px] right-3 md:right-4 z-50 rounded-full p-0.5">
                 <div
                     className="bg-white dark:bg-gray-800 shadow-inner rounded-full p-2 flex items-center justify-center cursor-pointer border-4 border-cyan-600"
                     onClick={handleCartClick}
@@ -98,10 +98,31 @@ const Services = () => {
                         {cart.length}
                     </span>
                 </div>
+            </div> */}
+
+
+            <div className="fixed bottom-4 md:top-[114px] right-4 md:right-4 z-50 rounded-full p-0.5">
+                <div
+                    className="bg-white dark:bg-gray-800 shadow-inner rounded-full p-0.5 flex items-center justify-center cursor-pointer border-4 border-green-500"
+                    onClick={handleCartClick}
+                >
+                    <img src="/images/whatsapp.svg" alt="Cart" className="w-10 h-10 " />
+                    {/* <span className="absolute right-[-5px] bottom-[32px] w-5 h-5 bg-orange-400 rounded-full flex items-center justify-center text-sm text-white">
+                        {cart.length}
+                    </span> */}
+                </div>
             </div>
 
-            <div className="justify-center mb-8 text-xl font-medium text-black dark:text-gray-400">
-                <div className="py-5 px-4 w-auto bg-white flex items-center justify-between cursor-pointer mt-5 border-y-2 border-gray-200">
+            <div className="justify-center mb-8 text-xl text-black dark:text-gray-400">
+                <div
+                    className="py-5 px-4 w-auto bg-white flex items-center justify-between cursor-pointer mt-5 border-y-2 border-gray-200 relative"
+                    style={{
+                        backgroundImage: "url('images/ornament header.svg')",
+                        backgroundPosition: "right 5px",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "175px",
+                    }}
+                >
                     <div className="flex items-center gap-2 md:gap-3">
                         <img
                             src="images/katalog_active.svg"
@@ -112,11 +133,14 @@ const Services = () => {
                             Katalog
                         </h5>
                     </div>
-                    <Search />
+                    <div className="z-10 font-medium">
+                        <Search />
+                    </div>
                 </div>
 
+
                 <div className="flex flex-col md:flex-row sm:space-x-4 mt-4 px-4">
-                    <div className="relative flex space-x-4 mb-4 lg:mb-0">
+                    <div className="relative flex space-x-4 lg:mb-0">
                         {/* Services Tab */}
                         <div
                             className={`${activeTab === "Services"
@@ -155,12 +179,9 @@ const Services = () => {
                         size="md"
                         popup
                     >
-                        <Modal.Header />
+                        <Modal.Header><div className="px-4 py-2">Redeem Code</div></Modal.Header>
                         <Modal.Body>
-                            {/* Header Section */}
-                            <div className="flex justify-between items-center mb-4">
-                                <div className="font-bold text-sm">Redeem Code</div>
-                            </div>
+
 
                             {/* Input Section */}
                             <div>
@@ -216,12 +237,12 @@ const Services = () => {
                                                             Rp. {product.price}
                                                         </span>
                                                     </div>
-                                                    <button
+                                                    {/* <button
                                                         className="inline-flex w-full justify-center rounded-lg bg-cyan-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-cyan-200 dark:focus:ring-cyan-900"
                                                         onClick={() => dispatch({ type: "Add", product: product })}
                                                     >
                                                         Add to Cart +
-                                                    </button>
+                                                    </button> */}
                                                 </>
                                             ) : (
                                                 <div className="text-gray-500 text-sm dark:text-gray-400">
