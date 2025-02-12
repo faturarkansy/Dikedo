@@ -6,6 +6,7 @@ import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert";
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import coordinatesData from "../components/Coordinates.json";
 import L from "leaflet";
 
 import { API_URL } from "../utils/constants";
@@ -21,11 +22,18 @@ import { Button, Modal } from "flowbite-react";
 export default function KendaraanDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [activeButton, setActiveButton] = useState(null);
 
     const [vehicle, setVehicle] = useState({});
     const [modal, setModal] = useState(false);
     const [coordinates, setCoordinates] = useState({ lat: -6.200000, lng: 106.816666 });
     const [intervalId, setIntervalId] = useState(null);
+
+    const [trackingData, setTrackingData] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isTracking, setIsTracking] = useState(false);
+    const [progress, setProgress] = useState(0);
+
 
     useEffect(() => {
         axios
@@ -43,6 +51,11 @@ export default function KendaraanDetail() {
             .catch((error) => {
                 console.log("Error: ", error);
             });
+    }, []);
+
+    useEffect(() => {
+        // Load dummy coordinates from JSON
+        setTrackingData(coordinatesData);
     }, []);
 
     const handleDelete = async (event) => {
@@ -72,34 +85,32 @@ export default function KendaraanDetail() {
         });
     };
 
-    const [trackingData, setTrackingData] = useState([]);
-    const [isTracking, setIsTracking] = useState(false);
-    const [progress, setProgress] = useState(0);
-
     const handleStartTracking = () => {
+        if (isTracking || trackingData.length === 0 || currentIndex >= trackingData.length) return;
+
         setIsTracking(true);
-        // Simulasi data tracking
+
         const newIntervalId = setInterval(() => {
-            setTrackingData((prevData) => [
-                ...prevData,
-                {
-                    lat: coordinates.lat + Math.random() * 0.01,
-                    lng: coordinates.lng + Math.random() * 0.01,
-                },
-            ]);
-            setProgress((prevProgress) => (prevProgress < 100 ? prevProgress + 5 : 100));
+            setCurrentIndex((prevIndex) => {
+                if (prevIndex < trackingData.length - 1) {
+                    setProgress(((prevIndex + 1) / trackingData.length) * 100);
+                    return prevIndex + 1;
+                } else {
+                    clearInterval(newIntervalId);
+                    setIsTracking(false);
+                    return prevIndex;
+                }
+            });
         }, 1000);
 
-        // Simpan interval untuk penghentian nanti
         setIntervalId(newIntervalId);
     };
-
 
     const handlePauseTracking = () => {
         setIsTracking(false);
         if (intervalId) {
             clearInterval(intervalId);
-            setIntervalId(null); // Reset intervalId setelah menghentikan interval
+            setIntervalId(null);
         }
     };
 
@@ -223,7 +234,7 @@ export default function KendaraanDetail() {
                     {/* Kontainer Tracking Jalan */}
                     <div className="grid grid-rows-3 lg:grid-cols-3 lg:grid-rows-1 bg-white p-4 rounded-lg shadow-md min-h-[300px] gap-4">
                         {/* Kontainer Judul */}
-                        <div className="row-span-1 lg:col-span-1 flex flex-col items-center justify-center text-lg font-bold text-cyan-600 bg-white rounded-lg shadow-md p-6 space-y-4">
+                        <div className="row-span-1 lg:col-span-1 flex flex-col items-center justify-center text-lg font-bold text-cyan-600 rounded-lg p-6 space-y-4">
                             {/* Judul */}
                             <h2 className="text-xl text-cyan-600">Tracking Jalan</h2>
 
@@ -231,13 +242,15 @@ export default function KendaraanDetail() {
                             <div className="flex space-x-4">
                                 <button
                                     onClick={handleStartTracking}
-                                    className="p-2 bg-cyan-600 text-white text-sm rounded-lg shadow hover:bg-white hover:text-cyan-600 hover:border-2 hover:border-cyan-600"
+                                    className={`p-2 text-white text-sm rounded-lg shadow-lg hover:bg-white hover:text-cyan-600 hover:border-2 hover:border-cyan-600 ${activeButton === "start" ? "bg-cyan-800" : "bg-cyan-600"
+                                        }`}
                                 >
                                     Start
                                 </button>
                                 <button
                                     onClick={handlePauseTracking}
-                                    className="p-2 bg-cyan-600 text-white text-sm rounded-lg shadow hover:bg-white hover:text-cyan-600 hover:border-2 hover:border-cyan-600"
+                                    className={`p-2 text-white text-sm rounded-lg shadow-lg hover:bg-white hover:text-cyan-600 hover:border-2 hover:border-cyan-600 ${activeButton === "pause" ? "bg-cyan-800" : "bg-cyan-600"
+                                        }`}
                                 >
                                     Pause
                                 </button>
@@ -269,7 +282,7 @@ export default function KendaraanDetail() {
                         <div className="row-span-2 lg:col-span-2 rounded-md overflow-hidden ">
                             {/* Map Section */}
                             <MapContainer
-                                center={[coordinates.lat, coordinates.lng]}
+                                center={trackingData.length > 0 ? [trackingData[0].lat, trackingData[0].lng] : [0, 0]}
                                 zoom={13}
                                 scrollWheelZoom={true}
                                 className="w-full h-full"
@@ -278,20 +291,17 @@ export default function KendaraanDetail() {
                                     url='https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&key=AIzaSyCxPsqzrnGiVjmKIBwCDdzAUIBVbBM2Ums'
                                     attribution=''
                                 />
-                                {trackingData.map((coord, index) => (
-                                    <Marker
-                                        key={index}
-                                        position={[coord.lat, coord.lng]}
-                                    >
+                                {trackingData.slice(0, currentIndex + 1).map((coord, index) => (
+                                    <Marker key={index} position={[coord.lat, coord.lng]}>
                                         <Popup>
                                             Latitude: {coord.lat.toFixed(5)} <br />
                                             Longitude: {coord.lng.toFixed(5)}
                                         </Popup>
                                     </Marker>
                                 ))}
-                                {trackingData.length > 1 && (
+                                {currentIndex > 0 && (
                                     <Polyline
-                                        positions={trackingData.map((coord) => [coord.lat, coord.lng])}
+                                        positions={trackingData.slice(0, currentIndex + 1).map((coord) => [coord.lat, coord.lng])}
                                         color="blue"
                                     />
                                 )}
@@ -323,8 +333,6 @@ export default function KendaraanDetail() {
                     </Modal.Body>
                 </Modal>
             </div>
-
         </div>
-
     );
 }
