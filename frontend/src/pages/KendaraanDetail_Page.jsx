@@ -6,7 +6,7 @@ import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert";
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import coordinatesData from "../components/Coordinates4.json";
+import coordinatesData from "../components/Coordinates5.json";
 import Arrow from "/images/arrow.svg";
 import { API_URL } from "../utils/constants";
 import { Button, Modal } from "flowbite-react";
@@ -312,7 +312,7 @@ export default function KendaraanDetail() {
                         <div className="row-span-2 lg:col-span-2 rounded-md overflow-hidden ">
                             {/* Map Section */}
                             <MapContainer
-                                center={trackingData.length > 0 ? [trackingData[0].lat, trackingData[0].lng] : [0, 0]}
+                                center={[coordinates.lat, coordinates.lng]}
                                 zoom={13}
                                 scrollWheelZoom={true}
                                 className="w-full h-full"
