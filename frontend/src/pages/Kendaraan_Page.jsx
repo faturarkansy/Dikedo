@@ -6,7 +6,7 @@ import { faList, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Search from '../components/Search_Kendaraan';
 import { API_URL } from "../utils/constants";
 import AddVehicle from "../components/AddVehicle";
-import Notifikasi from "../components/Notifikasi";
+import Notifikasi from "../components/Notification";
 import "leaflet-trackplayer";
 
 export default function Kendaraan() {
