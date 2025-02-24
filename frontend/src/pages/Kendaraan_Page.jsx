@@ -6,10 +6,22 @@ import { faList, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Search from '../components/Search_Kendaraan';
 import { API_URL } from "../utils/constants";
 import AddVehicle from "../components/AddVehicle";
+import Notifikasi from "../components/Notifikasi";
+import "leaflet-trackplayer";
 
 export default function Kendaraan() {
     const [vehicles, setVehicles] = useState([]);
     const navigate = useNavigate();
+    const [notif, setNotif] = useState({ message: "", type: "" });
+
+    const showNotification = (message, type) => {
+        setNotif({ message, type });
+
+        setTimeout(() => {
+            setNotif({ message: "", type: "" });
+        }, 1500); // Notifikasi menghilang setelah 1,5 detik
+    };
+
 
     useEffect(() => {
         axios
@@ -19,6 +31,19 @@ export default function Kendaraan() {
             })
             .catch((error) => {
                 console.log("Error: ", error);
+            });
+    }, []);
+
+    useEffect(() => {
+        axios
+            .get(API_URL + "vehicles")
+            .then((res) => {
+                setVehicles(res.data);
+                showNotification("Data kendaraan berhasil dimuat", "success");
+            })
+            .catch((error) => {
+                console.log("Error: ", error);
+                showNotification("Gagal mengambil data kendaraan", "error");
             });
     }, []);
 
@@ -55,6 +80,13 @@ export default function Kendaraan() {
                 <AddVehicle />
             </div>
 
+            {/* Notification */}
+            <Notifikasi
+                message={notif.message}
+                type={notif.type}
+                onClose={() => setNotif({ message: "", type: "" })}
+            />
+
             {/* Vehicle Grid */}
             <div className="m-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {vehicles.map((vehicle) => (
@@ -69,27 +101,24 @@ export default function Kendaraan() {
 
                         {/* Gradient Content */}
                         <div className="bg-gradient-to-t from-black to-transparent pt-2 px-3 flex flex-col justify-between h-[430px] rounded-lg border-2 border-gray-400 relative z-10">
-                            <div className="bg-cyan-600 px-2 pt-1 h-2/5 rounded-t-lg shadow-md text-center mt-auto border-t-2 border-x-2 border-cyan-700 flex flex-col">
-                                <div className="flex justify-between items-center">
-                                    <div className="flex flex-col items-start text-white">
-                                        <h3 className="text-lg font-bold">
-                                            {vehicle.no_kendaraan}
-                                        </h3>
-                                        <div className="bg white w-[100px]"></div>
-                                    </div>
-                                    <div className="flex flex-col items-end text-white">
-                                        <h3 className="text-xl bg-white opacity-50 rounded-lg w-[103px] px-2 font-extrabold text-black">
-                                            {vehicle.subscription?.status === "Active" ? "Active" : "Unactive"}
-                                        </h3>
-                                        <p className="text-xs w-fit py-0.5 ">
-                                            Subscription Status
-                                        </p>
-                                    </div>
+                            <div className="relative bg-cyan-600 px-2 py-2 h-2/5 rounded-t-lg shadow-md text-center mt-auto border-t-2 border-x-2 border-cyan-700 flex flex-col">
+                                {/* Elemen pojok kanan atas */}
+                                <div className="absolute top-[-34px] right-[5px] bg-cyan-600 border-t-2 border-x-2 border-cyan-700 text-white font-bold px-3 py-1 rounded-t-lg">
+                                    {vehicle.no_kendaraan}
                                 </div>
-                                <p className="font-bold text-xs text-white text-left mt-2">Device: {vehicle.id_perangkat}</p>
+
+                                {/* Subscription Status */}
+                                <div className="bg-gray-300 rounded-md px-3 py-1 flex justify-between items-center mb-2">
+                                    <span className="text-black font-medium text-xs">subscription status</span>
+                                    <span className="text-black font-extrabold">{vehicle.subscription?.status === "Active" ? "ACTIVE" : "INACTIVE"}</span>
+                                </div>
+                                {/* Informasi lainnya */}
+                                <p className="font-bold text-xs text-white text-left">Device: {vehicle.id_perangkat}</p>
                                 <p className="font-bold text-xs text-white text-left">Driver: {vehicle.driver}</p>
                                 <p className="font-bold text-xs text-white text-left">Expired: Jan 1, 2025</p>
                                 <p className="font-bold text-xs text-white text-left mb-2">Update: Oct 2, 2024 16:18</p>
+
+                                {/* Tombol Lihat Detail */}
                                 <Link
                                     to={`/kendaraan/${vehicle.id}`}
                                     className="bg-white text-cyan-600 w-fit shadow-md border border-gray-500 rounded px-2 flex items-center justify-center cursor-pointer hover:bg-cyan-100 hover:text-cyan-600"
