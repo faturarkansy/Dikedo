@@ -104,14 +104,14 @@ const HistoriTagihan = () => {
                                 </td>
                                 <td className="px-6 py-4">{row.price}</td>
                                 <td className="px-6 py-4">
-                                    <span className="bg-red-100 text-red-600 px-2 py-1 rounded-full text-xs">
+                                    <span className="bg-red-100 text-red-600 px-2 py-1 rounded-full text-xs font-bold">
                                         {row.status}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">{row.pembayaran}</td>
                                 <td className="px-6 py-4 text-center">
-                                    <button className="bg-cyan-600 text-white font-medium px-3 py-1 shadow-md border border-gray-500 rounded">
-                                        Pay Now
+                                    <button className="bg-cyan-600 text-white text-xs font-bold px-3 py-1 shadow-md border border-gray-500 rounded">
+                                        PAY NOW
                                     </button>
                                 </td>
                             </tr>
@@ -182,7 +182,7 @@ const HistoriTagihan = () => {
                                 <span
                                     className={`px-2 py-1 rounded-full text-xs ${row.status === "KONFIRMASI"
                                         ? "bg-blue-100 text-cyan-600"
-                                        : "bg-red-100 text-red-600"
+                                        : "bg-red-100 text-red-600 font-bold"
                                         }`}
                                 >
                                     {row.status}
