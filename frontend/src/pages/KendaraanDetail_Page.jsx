@@ -253,7 +253,7 @@ export default function KendaraanDetail() {
                     {/* Kontainer Tracking Jalan */}
                     <div className="grid grid-rows-3 lg:grid-cols-3 lg:grid-rows-1 bg-white p-4 rounded-lg shadow-md min-h-[300px] gap-4">
                         {/* Kontainer Judul */}
-                        <div className="row-span-1 lg:col-span-1 flex flex-col items-center justify-center text-lg font-bold text-cyan-600 rounded-lg py-6 px-14 space-y-4">
+                        <div className="row-span-1 lg:col-span-1 flex flex-col items-center justify-center text-lg font-bold text-cyan-600 rounded-lg py-6 px-4 space-y-4">
                             {/* Judul */}
                             <h2 className="text-xl text-cyan-600">Tracking Jalan</h2>
 
