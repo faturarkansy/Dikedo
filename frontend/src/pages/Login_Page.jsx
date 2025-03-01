@@ -74,16 +74,6 @@ const Login = () => {
 
             <div className={`${isMediumScreen ? 'w-full' : 'w-1/2'} h-full bg-[#f5f5f5] flex flex-col items-center justify-center p-20`}>
                 <div className='w-full flex flex-col max-w-[500px]'>
-                    {isMediumScreen && (
-                        <div className='absolute top-[5%] left-[75px] flex flex-col z-10'>
-                            <div className='flex items-center'>
-                                <img src="/images/logo.svg" alt="Logo" className='w-8.5 h-12 mr-4' />
-                                <h1 className='text-2xl text-black font-bold'>
-                                    DIKEDO<span className="font-normal">GPS</span>
-                                </h1>
-                            </div>
-                        </div>
-                    )}
                     <div className='w-full flex flex-col mb-2'>
                         <h3 className='text-3xl font-semibold mb-2'>Login</h3>
                         <p className='text-base mb-2'>Welcome Back! Please enter your details.</p>
@@ -131,6 +121,7 @@ const Login = () => {
                         </button>
                     </div>
                 </div>
+
                 <div className="w-full flex items-center justify-center">
                     <p className="text-sm font-normal text-[#060606]">
                         Don't have an account?{' '}
@@ -143,9 +134,11 @@ const Login = () => {
                     </p>
                 </div>
             </div>
+
             <img src="/images/ornament.svg" alt="Ornament" className="absolute bottom-0 left-0 w-20 h-20" />
             <img src="/images/ornament.svg" alt="Ornament" className="absolute top-0 right-0 w-20 h-20 transform scale-x-[-1] scale-y-[-1]" />
         </div>
     )
 }
+
 export default Login;

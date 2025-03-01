@@ -1,14 +1,17 @@
-import { useState } from "react";
-import Search from "../components/Search";
+import { useState, useEffect } from "react";
+// import Search from "../components/Search";
+import axios from "axios";
+import { API_URL } from "../utils/constants";
 
-const Event = () => {
+const Trip = () => {
   const [isArrowActive, setIsArrowActive] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const rowsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const [vehicles, setVehicles] = useState(null);
 
   const [q, setQ] = useState("");
-  const [searchParam] = useState(["berangkat", "sampai"]);
+  const [searchParam] = useState(["berangkat", "sampai", "dari", "ke"]);
 
   // Dummy data
   const datas = [
@@ -16,43 +19,38 @@ const Event = () => {
       berangkat: "14 Oct 2024 17:29",
       sampai: "15 Oct 2024 17:59",
       jarak: "0,06 km",
-      kecepatan: "0,13 km/h",
       dari: "Lampung, ID",
-      ke: "Lampung, ID",
+      ke: "Jakarta, ID",
       durasi: "13 MENIT",
-      status: "Move",
     },
     {
       berangkat: "15 Oct 2024 17:29",
       sampai: "16 Oct 2024 17:59",
       jarak: "0,06 km",
-      kecepatan: "0,13 km/h",
-      dari: "Lampung, ID",
-      ke: "Lampung, ID",
+      dari: "Jakarta, ID",
+      ke: "Surabaya, ID",
       durasi: "13 MENIT",
-      status: "Miss",
     },
     {
       berangkat: "16 Oct 2024 17:29",
       sampai: "17 Oct 2024 17:59",
       jarak: "0,06 km",
-      kecepatan: "0,13 km/h",
-      dari: "Lampung, ID",
-      ke: "Lampung, ID",
+      dari: "Surabaya, ID",
+      ke: "Bali, ID",
       durasi: "13 MENIT",
-      status: "Off",
-    },
-    {
-      berangkat: "17 Oct 2024 17:29",
-      sampai: "18 Oct 2024 17:59",
-      jarak: "0,06 km",
-      kecepatan: "0,13 km/h",
-      dari: "Lampung, ID",
-      ke: "Lampung, ID",
-      durasi: "13 MENIT",
-      status: "Park",
     },
   ];
+
+  useEffect(() => {
+    axios
+      .get(API_URL + "vehicles")
+      .then((res) => {
+        setVehicles(res.data);
+      })
+      .catch((error) => {
+        console.log("Error: ", error);
+      });
+  }, []);
 
   function search() {
     return datas.filter((data) => {
@@ -126,15 +124,13 @@ const Event = () => {
             className="w-7 h-7 lg:w-10 lg:h-10"
           />
           <h5 className="text-lg lg:text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-300 text-transparent bg-clip-text">
-            Event
+            Trip
           </h5>
         </div>
-        <div className="font-medium">
-          <Search q={q} setQ={setQ} />
-        </div>
+        <div className="font-medium">{/* <Search q={q} setQ={setQ} /> */}</div>
       </div>
       {/* Kontainer Kendaraan */}
-      <div className="flex items-center mt-4 px-4  relative">
+      <div className="flex items-center mt-4 px-4 space-x-4 relative">
         <div
           className="bg-cyan-600 text-white shadow-md rounded-lg py-2 px-4 md:px-6 flex items-center justify-center cursor-pointer hover:bg-cyan-100 hover:text-cyan-600"
           onClick={toggleArrow}
@@ -153,15 +149,14 @@ const Event = () => {
         {isDropdownVisible && (
           <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg border border-gray-200 rounded-lg z-10">
             <ul className="py-2">
-              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                Kendaraan 1
-              </li>
-              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                Kendaraan 2
-              </li>
-              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                Kendaraan 3
-              </li>
+              {vehicles.map((vehicle, index) => {
+                <li
+                  key={index}
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  {vehicle.no_kendaraan}
+                </li>;
+              })}
             </ul>
           </div>
         )}
@@ -172,37 +167,30 @@ const Event = () => {
           <table className="min-w-full table-auto text-sm text-gray-700">
             <thead className="bg-white border-b-4 border-gray-200">
               <tr>
+                <th className="text-left px-6 py-3 font-medium">From</th>
+                <th className="text-left px-6 py-3 font-medium">To</th>
+                <th className="text-left px-6 py-3 font-medium">Distance</th>
                 <th className="text-left px-6 py-3 font-medium">Start</th>
                 <th className="text-left px-6 py-3 font-medium">Arrive</th>
-                <th className="text-left px-6 py-3 font-medium">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 space-y-2">
               {currentRows.map((row, index) => (
                 <tr key={index} className="bg-white hover:bg-gray-50">
                   <td className="px-6 py-4 font-medium text-gray-600">
+                    {row.dari}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-600">
+                    {row.ke}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-600">
+                    {row.jarak}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-600">
                     {row.berangkat}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-600">
                     {row.sampai}
-                  </td>
-                  <td className={`px-6 py-4 rounded-lg text-center`}>
-                    <div
-                      className={`flex justify-center items-center px-2 py-1 lg:w-16 rounded-lg text-white
-                                                ${
-                                                  row.status === "Move"
-                                                    ? "bg-green-400"
-                                                    : row.status === "Off"
-                                                    ? "bg-red-500"
-                                                    : row.status === "Park"
-                                                    ? "bg-yellow-300"
-                                                    : row.status === "Miss"
-                                                    ? "bg-gray-400"
-                                                    : "bg-transparent text-gray-700 hover:text-blue-500"
-                                                }`}
-                    >
-                      {row.status}
-                    </div>
                   </td>
                 </tr>
               ))}
@@ -258,4 +246,4 @@ const Event = () => {
   );
 };
 
-export default Event;
+export default Trip;
