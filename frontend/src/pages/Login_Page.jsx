@@ -74,6 +74,16 @@ const Login = () => {
 
             <div className={`${isMediumScreen ? 'w-full' : 'w-1/2'} h-full bg-[#f5f5f5] flex flex-col items-center justify-center p-20`}>
                 <div className='w-full flex flex-col max-w-[500px]'>
+                    {isMediumScreen && (
+                        <div className='absolute top-[5%] left-[75px] flex flex-col z-10'>
+                            <div className='flex items-center'>
+                                <img src="/images/logo.svg" alt="Logo" className='w-8.5 h-12 mr-4' />
+                                <h1 className='text-2xl text-black font-bold'>
+                                    DIKEDO<span className="font-normal">GPS</span>
+                                </h1>
+                            </div>
+                        </div>
+                    )}
                     <div className='w-full flex flex-col mb-2'>
                         <h3 className='text-3xl font-semibold mb-2'>Login</h3>
                         <p className='text-base mb-2'>Welcome Back! Please enter your details.</p>
@@ -140,5 +150,4 @@ const Login = () => {
         </div>
     )
 }
-
 export default Login;
