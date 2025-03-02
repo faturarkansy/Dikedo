@@ -84,40 +84,40 @@ export default function KendaraanDetail() {
   };
 
   const handleStartTracking = () => {
-    if (
-      isTracking ||
-      trackingData.length === 0 ||
-      currentIndex >= trackingData.length
-    )
-      return;
+        if (isTracking || trackingData.length === 0) return;
 
-    setIsTracking(true);
-
-    const newIntervalId = setInterval(() => {
-      setCurrentIndex((prevIndex) => {
-        if (prevIndex < trackingData.length - 1) {
-          const nextIndex = prevIndex + 1;
-          const nextCoordinates = trackingData[nextIndex];
-
-          // Update posisi marker dan polyline
-          setCoordinates({
-            lat: nextCoordinates.lat,
-            lng: nextCoordinates.lng,
-          });
-          setPolylinePositions((prev) => [...prev, nextCoordinates]);
-
-          return nextIndex;
-        } else {
-          clearInterval(newIntervalId);
-          setIsTracking(false);
-          return prevIndex;
+        if (currentIndex >= trackingData.length - 1) {
+            setCurrentIndex(0);
+            setPolylinePositions([]);
+            setProgress(0); // Reset progress saat tracking diulang
         }
-      });
-    }, 250); // Update posisi setiap 0,25 detik
+        setIsTracking(true);
 
-    setIntervalId(newIntervalId);
-  };
+        const newIntervalId = setInterval(() => {
+            setCurrentIndex((prevIndex) => {
+                if (prevIndex < trackingData.length - 1) {
+                    const nextIndex = prevIndex + 1;
+                    const nextCoordinates = trackingData[nextIndex];
 
+                    // Update posisi marker dan polyline
+                    setCoordinates({ lat: nextCoordinates.lat, lng: nextCoordinates.lng });
+                    setPolylinePositions((prev) => [...prev, nextCoordinates]);
+
+                    // Update progress bar
+                    setProgress(((nextIndex + 1) / trackingData.length) * 100);
+
+                    return nextIndex;
+                } else {
+                    clearInterval(newIntervalId);
+                    setIsTracking(false);
+                    return prevIndex;
+                }
+            });
+        }, 250);
+
+        setIntervalId(newIntervalId);
+    };
+  
   const handlePauseTracking = () => {
     setIsTracking(false);
     if (intervalId) {
